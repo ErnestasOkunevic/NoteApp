@@ -6,7 +6,7 @@
     android:layout_width="150dp"
     android:layout_height="300dp"
     android:layout_marginBottom="20dp"
-    android:background="@color/darkerBlue"
+    android:background="@drawable/bg_note_big"
     android:padding="5dp">
 
     <TextView
@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="1900-01-01"
         android:textAlignment="center"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,6 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
+        android:textColor="@color/black"
         android:ellipsize="end"
         android:maxLines="12"
         android:text="Note text probably about something really really important."
