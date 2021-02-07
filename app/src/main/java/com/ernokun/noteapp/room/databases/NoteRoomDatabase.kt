@@ -58,7 +58,7 @@ abstract class NoteRoomDatabase : RoomDatabase() {
             noteDao.deleteAll()
 
             for (i in 1..5)
-                noteDao.insert(Note("This is the ${i}-th note.", creationDate = "2020-01-05"))
+                noteDao.insert(Note("This is the ${i}-th note."))
         }
 
     }

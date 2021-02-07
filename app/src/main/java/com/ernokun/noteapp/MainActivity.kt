@@ -15,9 +15,11 @@ import com.ernokun.noteapp.room.entities.Note
 import com.ernokun.noteapp.room.viewModels.NoteViewModel
 import com.ernokun.noteapp.room.viewModels.NoteViewModelFactory
 import com.ernokun.noteapp.ui.dialogs.AddNoteDialog
+import com.ernokun.noteapp.ui.dialogs.UpdateNoteDialog
 import com.ernokun.noteapp.utils.NoteAdapter
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
+    NoteAdapter.OnPressedNoteItem, UpdateNoteDialog.UpdateNoteDialogListener {
 
     private val noteViewModel: NoteViewModel by viewModels {
         NoteViewModelFactory((application as NotesApplication).repository)
@@ -25,7 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var noteList: List<Note>
 
-    private lateinit var textViewNoteText: TextView
     private lateinit var addNoteImageView: ImageView
     private lateinit var recyclerView_notes: RecyclerView
     private lateinit var noteAdapter: NoteAdapter
@@ -39,8 +40,6 @@ class MainActivity : AppCompatActivity() {
         prepareNoteAdapter()
 
         addNoteImageView.setOnClickListener {
-//            addNote(Note("A new note that was created from the button"))
-//            showToast("Add note was pressed!")
             showAddNoteDialog()
         }
 
@@ -53,26 +52,49 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun findViews() {
         addNoteImageView = findViewById(R.id.imageView_addNote)
         recyclerView_notes = findViewById(R.id.recyclerView_notes)
     }
 
+
     private fun prepareNoteAdapter() {
-        noteAdapter = NoteAdapter()
+        noteAdapter = NoteAdapter(this)
         recyclerView_notes.adapter = noteAdapter
     }
 
+
+    /**
+     *  Utility, primarily used to fix bugs
+     */
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun addNote(note: Note) {
-        noteViewModel.insert(note)
-    }
 
     private fun showAddNoteDialog() {
         AddNoteDialog.newInstance().show(supportFragmentManager, AddNoteDialog.TAG)
     }
 
+
+    override fun saveNote(note: Note) {
+        noteViewModel.insert(note)
+    }
+
+
+    /**
+     *  Open the UpdateNoteDialog window
+     */
+    override fun editNote(note: Note) {
+        UpdateNoteDialog.newInstance(note).show(supportFragmentManager, AddNoteDialog.TAG)
+    }
+
+
+    /**
+     *  Update the note from UpdateNoteDialog in the database
+     */
+    override fun updateNote(note: Note) {
+        noteViewModel.update(note)
+    }
 }

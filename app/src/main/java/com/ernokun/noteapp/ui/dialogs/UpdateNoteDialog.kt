@@ -14,28 +14,37 @@ import androidx.fragment.app.DialogFragment
 import com.ernokun.noteapp.R
 import com.ernokun.noteapp.room.entities.Note
 
-class AddNoteDialog : DialogFragment() {
+class UpdateNoteDialog() : DialogFragment() {
 
     private lateinit var button_saveNote: Button
     private lateinit var button_discardChanges: Button
     private lateinit var editTextTextMultiLine_noteText: EditText
 
-    private var listener: AddNoteDialogListener? = null
+    private var listener: UpdateNoteDialogListener? = null
+
+    private lateinit var note: Note
+
+    fun setNote(note: Note) {
+        this.note = note
+    }
 
 
     companion object {
 
-        const val TAG = "AddNoteDialog"
+        const val TAG = "UpdateNoteDialog"
         private const val KEY_NOTE_TEXT = "KEY_NOTE_TEXT"
 
-        fun newInstance(): AddNoteDialog {
-            return AddNoteDialog()
+        fun newInstance(note: Note): UpdateNoteDialog {
+            val fragment = UpdateNoteDialog()
+            fragment.setNote(note)
+
+            return fragment
         }
     }
 
 
-    public interface AddNoteDialogListener {
-        fun saveNote(note: Note)
+    interface UpdateNoteDialogListener {
+        fun updateNote(note: Note)
     }
 
 
@@ -49,8 +58,11 @@ class AddNoteDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.note = note
+
         setupViews(view)
         setupOnClickListeners()
+        setupViewText()
     }
 
     override fun onStart() {
@@ -72,9 +84,11 @@ class AddNoteDialog : DialogFragment() {
 
     private fun setupOnClickListeners() {
         button_saveNote.setOnClickListener {
-            // tell activity to save note
+            // tell activity to update note
             val noteText: String = editTextTextMultiLine_noteText.text.toString()
-            listener?.saveNote(Note(noteText))
+            note.noteText = noteText
+
+            listener?.updateNote(note)
 
             dismiss()
         }
@@ -84,14 +98,18 @@ class AddNoteDialog : DialogFragment() {
         }
     }
 
+    private fun setupViewText() {
+        editTextTextMultiLine_noteText.setText(note.noteText)
+    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is AddNoteDialogListener)
+        if (context is UpdateNoteDialogListener)
             listener = context
         else
-            throw RuntimeException("You need to implement AddNoteDialogListener in your activity....")
+            throw RuntimeException("You need to implement UpdateNoteDialogListener in your activity....")
     }
 
     override fun onDetach() {
