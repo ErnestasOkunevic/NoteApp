@@ -6,7 +6,7 @@
     android:layout_width="150dp"
     android:layout_height="300dp"
     android:layout_marginBottom="20dp"
-    android:background="#dedede"
+    android:background="@color/darkerBlue"
     android:padding="5dp">
 
     <TextView

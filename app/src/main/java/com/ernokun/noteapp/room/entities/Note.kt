@@ -18,9 +18,18 @@ data class Note(
     @PrimaryKey val id: String = UUID.randomUUID().toString()
 ) {
 
-    var formattedDate: String
+    lateinit var formattedDate: String
 
     init {
+        formatDate()
+    }
+
+    fun updateDate() {
+        creationDate = LocalDateTime.now().toString()
+        formatDate()
+    }
+
+    private fun formatDate() {
         val localDateTime: LocalDateTime = LocalDateTime.parse(creationDate)
         val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         formattedDate = dateTimeFormatter.format(localDateTime)

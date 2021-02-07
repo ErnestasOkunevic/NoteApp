@@ -1,14 +1,18 @@
 package com.ernokun.noteapp
 
+import android.os.Build
 import android.os.Bundle
-import android.widget.Button
+import android.view.KeyEvent
+import android.view.View
+import android.view.WindowManager
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ernokun.noteapp.room.applications.NotesApplication
 import com.ernokun.noteapp.room.entities.Note
@@ -27,8 +31,11 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
 
     private lateinit var noteList: List<Note>
 
+
+    private lateinit var editText_searchBar: EditText
     private lateinit var addNoteImageView: ImageView
     private lateinit var recyclerView_notes: RecyclerView
+
     private lateinit var noteAdapter: NoteAdapter
 
 
@@ -36,12 +43,10 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        changeStatusBarColor();
+
         findViews()
         prepareNoteAdapter()
-
-        addNoteImageView.setOnClickListener {
-            showAddNoteDialog()
-        }
 
         noteViewModel.allNotes.observe(this, Observer { notes ->
             notes?.let {
@@ -50,10 +55,25 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
             }
         })
 
+        addNoteImageView.setOnClickListener {
+            showAddNoteDialog()
+        }
+
+        editText_searchBar.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                val filterString: String = editText_searchBar.text.toString()
+                filterList(filterString)
+
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 
 
     private fun findViews() {
+        editText_searchBar = findViewById(R.id.editText_searchBar)
         addNoteImageView = findViewById(R.id.imageView_addNote)
         recyclerView_notes = findViewById(R.id.recyclerView_notes)
     }
@@ -69,7 +89,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
      *  Utility, primarily used to fix bugs
      */
     private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
     }
 
 
@@ -91,10 +111,34 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
     }
 
 
+    override fun deleteNote(note: Note) {
+        noteViewModel.delete(note)
+        showToast("Note was deleted!")
+    }
+
+
     /**
      *  Update the note from UpdateNoteDialog in the database
      */
     override fun updateNote(note: Note) {
         noteViewModel.update(note)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun changeStatusBarColor() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        window.setBackgroundDrawableResource(R.drawable.test_bg_main)
+    }
+
+    private fun filterList(noteFilter: String) {
+        val filteredNoteList: List<Note> =
+            noteList.filter { note ->
+                note.noteText.toLowerCase().contains(noteFilter.toLowerCase())
+            }
+
+        noteAdapter.submitList(filteredNoteList);
     }
 }

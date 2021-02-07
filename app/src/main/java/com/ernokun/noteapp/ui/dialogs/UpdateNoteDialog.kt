@@ -13,6 +13,7 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.ernokun.noteapp.R
 import com.ernokun.noteapp.room.entities.Note
+import java.time.LocalDateTime
 
 class UpdateNoteDialog() : DialogFragment() {
 
@@ -87,6 +88,7 @@ class UpdateNoteDialog() : DialogFragment() {
             // tell activity to update note
             val noteText: String = editTextTextMultiLine_noteText.text.toString()
             note.noteText = noteText
+            note.updateDate()
 
             listener?.updateNote(note)
 

@@ -17,8 +17,9 @@ class NoteAdapter(context: Context) : ListAdapter<Note, NoteAdapter.NoteViewHold
 
     private var listener: OnPressedNoteItem? = null
 
-    public interface OnPressedNoteItem {
+    interface OnPressedNoteItem {
         fun editNote(note: Note)
+        fun deleteNote(note: Note)
     }
 
     init {
@@ -52,6 +53,12 @@ class NoteAdapter(context: Context) : ListAdapter<Note, NoteAdapter.NoteViewHold
             constraintLayout_note.setOnClickListener {
                 listener?.editNote(note)
             }
+
+            constraintLayout_note.setOnLongClickListener {
+                listener?.deleteNote(note)
+                true
+            }
+
         }
 
         companion object {
@@ -77,7 +84,8 @@ class NoteAdapter(context: Context) : ListAdapter<Note, NoteAdapter.NoteViewHold
 
     class NoteComparator : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
-            return oldItem === newItem
+//            return oldItem === newItem
+            return oldItem.id.contentEquals(newItem.id)
         }
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {

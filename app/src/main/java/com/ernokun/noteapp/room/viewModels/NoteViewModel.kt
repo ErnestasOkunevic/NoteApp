@@ -14,15 +14,15 @@ class NoteViewModel(private val repository: NoteRepository): ViewModel() {
     val allNotes: LiveData<List<Note>> = repository.allNotes.asLiveData()
 
     /**
-     * Launching a new coroutine to insert the data in a non-blocking way
+     * Launching a new coroutine to insert/update/delete the data in a non-blocking way
      */
     fun insert(note: Note) = viewModelScope.launch { repository.insert(note) }
 
-
-    /**
-     * Launching a new coroutine to update the data in a non-blocking way
-     */
     fun update(note: Note) = viewModelScope.launch { repository.update(note) }
+
+    fun delete(note: Note) = viewModelScope.launch { repository.delete(note) }
+
+    fun deleteAll(note: Note) = viewModelScope.launch { repository.deleteAll() }
 }
 
 class NoteViewModelFactory(private val repository: NoteRepository) : ViewModelProvider.Factory {
