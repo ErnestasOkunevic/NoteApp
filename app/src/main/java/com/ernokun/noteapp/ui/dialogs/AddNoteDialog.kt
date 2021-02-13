@@ -34,7 +34,7 @@ class AddNoteDialog : DialogFragment() {
     }
 
 
-    public interface AddNoteDialogListener {
+    interface AddNoteDialogListener {
         fun saveNote(note: Note)
     }
 

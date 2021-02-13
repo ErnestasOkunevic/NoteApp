@@ -86,11 +86,15 @@ class UpdateNoteDialog() : DialogFragment() {
     private fun setupOnClickListeners() {
         button_saveNote.setOnClickListener {
             // tell activity to update note
-            val noteText: String = editTextTextMultiLine_noteText.text.toString()
-            note.noteText = noteText
-            note.updateDate()
+            val noteTextString: String = editTextTextMultiLine_noteText.text.toString()
+            
+            // this was causing a bug!
+//            note.noteText = noteText
+//            note.updateDate()
 
-            listener?.updateNote(note)
+
+
+            listener?.updateNote(Note(id = note.id, noteText = noteTextString))
 
             dismiss()
         }

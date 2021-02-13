@@ -1,6 +1,7 @@
 package com.ernokun.noteapp.utils
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ernokun.noteapp.MainActivity
 import com.ernokun.noteapp.R
 import com.ernokun.noteapp.room.entities.Note
 import java.lang.RuntimeException
 
-class NoteAdapter(context: Context) : ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteComparator()) {
+class NoteAdapter(context: Context) :
+    ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteComparator()) {
 
     private var listener: OnPressedNoteItem? = null
 
@@ -30,7 +33,6 @@ class NoteAdapter(context: Context) : ListAdapter<Note, NoteAdapter.NoteViewHold
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder.create(parent)
     }
@@ -42,7 +44,8 @@ class NoteAdapter(context: Context) : ListAdapter<Note, NoteAdapter.NoteViewHold
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val constraintLayout_note: ConstraintLayout = itemView.findViewById(R.id.constraintLayout_note)
+        private val constraintLayout_note: ConstraintLayout =
+            itemView.findViewById(R.id.constraintLayout_note)
         private val textView_noteDate: TextView = itemView.findViewById(R.id.textView_noteDate)
         private val textView_noteText: TextView = itemView.findViewById(R.id.textView_noteText)
 
@@ -85,11 +88,13 @@ class NoteAdapter(context: Context) : ListAdapter<Note, NoteAdapter.NoteViewHold
     class NoteComparator : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
 //            return oldItem === newItem
-            return oldItem.id.contentEquals(newItem.id)
+            Log.d("items", "\nareItemsTheSame: oldItem.id(${oldItem.id}) == newItem.id(${newItem.id}) is ${oldItem.id == newItem.id}")
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-            return oldItem == newItem
+            Log.d("contents", "areContentsTheSame: oldItem(${oldItem}) == newItem(${newItem}) is ${oldItem == newItem}")
+            return oldItem.noteText == newItem.noteText
         }
 
     }

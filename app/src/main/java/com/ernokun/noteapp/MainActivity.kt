@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
     /**
      *  Utility, primarily used to fix bugs
      */
-    private fun showToast(message: String) {
+    fun showToast(message: String) {
         Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
     }
 
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
 
 
     /**
-     *  Update the note from UpdateNoteDialog in the database
+     *  Update the note from UpdateNoteDialog
      */
     override fun updateNote(note: Note) {
         noteViewModel.update(note)
