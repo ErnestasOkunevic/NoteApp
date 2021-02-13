@@ -11,13 +11,12 @@
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="500dp"
-        android:background="@drawable/small_note_picture"
+        android:background="@drawable/bg_note_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.432" />
+        app:layout_constraintVertical_bias="0.428" />
 
     <EditText
         android:id="@+id/editTextTextMultiLine_noteText"
@@ -33,7 +32,8 @@
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="10dp"
-        android:textColor="@color/black"
+        android:textColor="@color/light"
+        android:textColorHint="@color/light"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/view"

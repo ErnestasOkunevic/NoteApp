@@ -10,7 +10,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ernokun.noteapp.MainActivity
 import com.ernokun.noteapp.R
 import com.ernokun.noteapp.room.entities.Note
 import java.lang.RuntimeException
@@ -32,7 +31,6 @@ class NoteAdapter(context: Context) :
             throw RuntimeException("Context must be an instance of OnPressedNoteItem!")
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder.create(parent)
     }
@@ -50,7 +48,7 @@ class NoteAdapter(context: Context) :
         private val textView_noteText: TextView = itemView.findViewById(R.id.textView_noteText)
 
         fun bind(note: Note, listener: OnPressedNoteItem?) {
-            textView_noteDate.text = note.formattedDate
+            textView_noteDate.text = note.getFormattedDate();
             textView_noteText.text = note.noteText
 
             constraintLayout_note.setOnClickListener {
@@ -87,13 +85,10 @@ class NoteAdapter(context: Context) :
 
     class NoteComparator : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
-//            return oldItem === newItem
-            Log.d("items", "\nareItemsTheSame: oldItem.id(${oldItem.id}) == newItem.id(${newItem.id}) is ${oldItem.id == newItem.id}")
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-            Log.d("contents", "areContentsTheSame: oldItem(${oldItem}) == newItem(${newItem}) is ${oldItem == newItem}")
             return oldItem.noteText == newItem.noteText
         }
 

@@ -12,4 +12,8 @@
     <color name="lighterBlue">#FFC8E4FD</color>
     <color name="darkerBlue">#FF63A4FF</color>
 
+    <color name="dark">#282828</color>
+    <color name="gray">#424141</color>
+    <color name="light">#DEDEDE</color>
+
 </resources>

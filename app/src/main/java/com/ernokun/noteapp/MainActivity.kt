@@ -1,17 +1,13 @@
 package com.ernokun.noteapp
 
-import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.ernokun.noteapp.room.applications.NotesApplication
@@ -21,6 +17,7 @@ import com.ernokun.noteapp.room.viewModels.NoteViewModelFactory
 import com.ernokun.noteapp.ui.dialogs.AddNoteDialog
 import com.ernokun.noteapp.ui.dialogs.UpdateNoteDialog
 import com.ernokun.noteapp.utils.NoteAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
     NoteAdapter.OnPressedNoteItem, UpdateNoteDialog.UpdateNoteDialogListener {
@@ -33,7 +30,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
 
 
     private lateinit var editText_searchBar: EditText
-    private lateinit var addNoteImageView: ImageView
+    private lateinit var addNoteButton: FloatingActionButton
     private lateinit var recyclerView_notes: RecyclerView
 
     private lateinit var noteAdapter: NoteAdapter
@@ -42,8 +39,6 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        changeStatusBarColor();
 
         findViews()
         prepareNoteAdapter()
@@ -55,7 +50,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
             }
         })
 
-        addNoteImageView.setOnClickListener {
+        addNoteButton.setOnClickListener {
             showAddNoteDialog()
         }
 
@@ -74,7 +69,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
 
     private fun findViews() {
         editText_searchBar = findViewById(R.id.editText_searchBar)
-        addNoteImageView = findViewById(R.id.imageView_addNote)
+        addNoteButton = findViewById(R.id.floatingActionButton_addNote)
         recyclerView_notes = findViewById(R.id.recyclerView_notes)
     }
 
@@ -125,13 +120,6 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun changeStatusBarColor() {
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        window.setBackgroundDrawableResource(R.drawable.test_bg_main)
-    }
 
     private fun filterList(noteFilter: String) {
         val filteredNoteList: List<Note> =

@@ -3,34 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout_note"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
+    android:layout_width="148dp"
+    android:layout_height="140dp"
     android:layout_marginBottom="20dp"
-    android:background="@drawable/small_note_picture"
-    android:padding="5dp">
+    android:background="@drawable/bg_note_small"
+    android:padding="5dp"
+    android:elevation="5dp">
 
     <TextView
         android:id="@+id/textView_noteDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/poppins_medium"
         android:text="1900-01-01"
-        android:textAlignment="center"
+        android:textAlignment="textEnd"
+        android:textColor="@color/light"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView_noteText"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
         android:ellipsize="end"
-        android:textColor="@color/black"
+        android:fontFamily="@font/poppins"
         android:maxLines="6"
-        android:text="Note text probably about something really really important. "
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Note text probably about something really really important. It is probably somethign really really important though."
+        android:textColor="@color/light"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView_noteDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_noteDate" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_noteTitle"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/textView_noteTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Default note title"
+        android:textAlignment="center"
+        android:textColor="@color/light"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
