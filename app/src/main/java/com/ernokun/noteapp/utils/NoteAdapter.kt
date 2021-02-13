@@ -44,12 +44,15 @@ class NoteAdapter(context: Context) :
 
         private val constraintLayout_note: ConstraintLayout =
             itemView.findViewById(R.id.constraintLayout_note)
+
         private val textView_noteDate: TextView = itemView.findViewById(R.id.textView_noteDate)
         private val textView_noteText: TextView = itemView.findViewById(R.id.textView_noteText)
+        private val textView_noteTitle: TextView = itemView.findViewById(R.id.textView_noteTitle)
 
         fun bind(note: Note, listener: OnPressedNoteItem?) {
             textView_noteDate.text = note.getFormattedDate();
             textView_noteText.text = note.noteText
+            textView_noteTitle.text = note.noteTitle
 
             constraintLayout_note.setOnClickListener {
                 listener?.editNote(note)
