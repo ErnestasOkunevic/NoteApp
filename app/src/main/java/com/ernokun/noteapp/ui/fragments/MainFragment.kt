@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -110,16 +111,10 @@ class MainFragment(val noteViewModel: NoteViewModel) : Fragment(R.layout.fragmen
      *  Sets up the search bar listener
      */
     private fun setupSearchBarListener() {
-        editText_searchBar.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                //Perform Code
-                val filterString: String = editText_searchBar.text.toString()
-                filterList(filterString)
-
-                return@OnKeyListener true
-            }
-            false
-        })
+        editText_searchBar.addTextChangedListener {
+            val filterString: String = editText_searchBar.text.toString()
+            filterList(filterString)
+        }
     }
 
 
