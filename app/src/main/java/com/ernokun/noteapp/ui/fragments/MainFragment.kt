@@ -16,17 +16,37 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainFragment(val noteViewModel: NoteViewModel) : Fragment(R.layout.fragment_main) {
 
+
+    /**
+     * This is a reference to the noteList that is provided by the noteViewModel
+     * It is used primarily for the filterList function
+     */
     private lateinit var noteList: List<Note>
 
+
+    /**
+     * The views in this fragment
+     */
     private lateinit var editText_searchBar: EditText
     private lateinit var addNoteButton: FloatingActionButton
     private lateinit var recyclerView_notes: RecyclerView
 
+
+    /**
+     * The note adapter for the recyclerView_notes RecyclerView
+     */
     private lateinit var noteAdapter: NoteAdapter
 
+
+    /**
+     * MainActivity is later passed to this variable via the onAttach method
+     */
     private var listener: NoteListener? = null
 
 
+    /**
+     * This interface is used for communication between this MainFragment and MainActivity
+     */
     interface NoteListener {
         fun onAddNotePressed()
     }
@@ -37,26 +57,36 @@ class MainFragment(val noteViewModel: NoteViewModel) : Fragment(R.layout.fragmen
 
         findViews(view)
 
-        prepareNoteAdapter()
-
-        observeNoteData()
-
-        initAddButtonListener()
-        initSearchBarListener()
+        setupNoteAdapter()
+        setupNoteDataObservation()
+        setupAddButtonListener()
+        setupSearchBarListener()
     }
 
+
+    /**
+     *  Finds all of the views in this fragment
+     */
     private fun findViews(view: View) {
         editText_searchBar = view.findViewById(R.id.editText_searchBar)
         addNoteButton = view.findViewById(R.id.floatingActionButton_addNote)
         recyclerView_notes = view.findViewById(R.id.recyclerView_notes)
     }
 
-    private fun prepareNoteAdapter() {
+
+    /**
+     * Sets up the NoteAdapter for the recyclerview
+     */
+    private fun setupNoteAdapter() {
         noteAdapter = context?.let { NoteAdapter(it) }!!
         recyclerView_notes.adapter = noteAdapter
     }
 
-    private fun observeNoteData() {
+
+    /**
+     * Sets up the note data observation from the ROOM database
+     */
+    private fun setupNoteDataObservation() {
         noteViewModel.allNotes.observe(viewLifecycleOwner, Observer { notes ->
             notes?.let {
                 noteList = it
@@ -65,13 +95,21 @@ class MainFragment(val noteViewModel: NoteViewModel) : Fragment(R.layout.fragmen
         })
     }
 
-    private fun initAddButtonListener() {
+
+    /**
+     *  Sets up the add note button listener
+     */
+    private fun setupAddButtonListener() {
         addNoteButton.setOnClickListener {
             listener?.onAddNotePressed()
         }
     }
 
-    private fun initSearchBarListener() {
+
+    /**
+     *  Sets up the search bar listener
+     */
+    private fun setupSearchBarListener() {
         editText_searchBar.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
@@ -84,6 +122,11 @@ class MainFragment(val noteViewModel: NoteViewModel) : Fragment(R.layout.fragmen
         })
     }
 
+
+    /**
+     *  Filters all of the notes by a string and then shows the result
+     *  in the NoteAdapter list
+     */
     private fun filterList(noteFilter: String) {
         val noteFilterCaseLowered = noteFilter.toLowerCase()
 
@@ -102,7 +145,7 @@ class MainFragment(val noteViewModel: NoteViewModel) : Fragment(R.layout.fragmen
         if (context is NoteListener)
             listener = context
         else
-            throw RuntimeException("You need to implement AddNoteListener in your activity!")
+            throw RuntimeException("You need to implement NoteListener in your activity!")
     }
 
     override fun onDetach() {
