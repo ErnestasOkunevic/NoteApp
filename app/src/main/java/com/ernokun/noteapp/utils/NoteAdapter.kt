@@ -1,7 +1,6 @@
 package com.ernokun.noteapp.utils
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +19,8 @@ class NoteAdapter(context: Context) :
     private var listener: OnPressedNoteItem? = null
 
     interface OnPressedNoteItem {
-        fun editNote(note: Note)
-        fun deleteNote(note: Note)
+        fun onEditNotePressed(note: Note)
+        fun onDeleteNotePressed(note: Note)
     }
 
     init {
@@ -55,11 +54,11 @@ class NoteAdapter(context: Context) :
             textView_noteTitle.text = note.noteTitle
 
             constraintLayout_note.setOnClickListener {
-                listener?.editNote(note)
+                listener?.onEditNotePressed(note)
             }
 
             constraintLayout_note.setOnLongClickListener {
-                listener?.deleteNote(note)
+                listener?.onDeleteNotePressed(note)
                 true
             }
 
